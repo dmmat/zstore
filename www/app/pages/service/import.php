@@ -160,6 +160,8 @@ class Import extends \App\Pages\Base {
                     $cat->save();
                 }
             }
+            $item = null;
+            
             $itemname = $row[$colname - 1];
             $itemcode = $row[$colcode - 1];
             if (strlen($itemname) > 0) {
