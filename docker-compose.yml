@@ -1,0 +1,30 @@
+version: '3.1'
+services:
+    mysql:
+        image: 'mysql:5.7'
+        working_dir: /db
+        volumes:
+            - './db:/db'
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=zstore
+        ports:
+            - '36001:3306'
+
+
+    webserver:
+        image: 'nginx:alpine'
+        working_dir: /www
+        volumes:
+            - './www:/www'
+            - './docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
+        ports:
+            - '36000:80'
+
+    php-fpm:
+        build: docker/php-fpm
+        working_dir: /www
+        volumes:
+            - './www:/www'
+            - './docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini'
+

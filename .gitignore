@@ -6,5 +6,6 @@ www/cron.cmd
 www/.idea/
  
  
-www/logs/
-www/upload/
+www/logs/.*
+www/upload/.*
+www/config/config.ini
