@@ -18,7 +18,8 @@ use Zippy\WebApplication as App;
 class Import extends \App\Pages\Base
 {
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         if (false == \App\ACL::checkShowSer('Import')) {
             return;
@@ -34,7 +35,9 @@ class Import extends \App\Pages\Base
         $form->add(new DropDownChoice("store", Store::getList(), H::getDefStore()));
 
         $form->add(new \Zippy\Html\Form\File("filename"));
-        $cols = array(0 => '-', 'A' => 'A', 'B' => 'B', 'C' => 'C', 'D' => 'D', 'E' => 'E', 'F' => 'F', 'G' => 'G', 'H' => 'H', 'I' => 'I', 'J' => 'J', 'K' => 'K', 'L' => 'L', 'M' => 'M',);
+        $cols = array(0 => '-', 'A' => 'A', 'B' => 'B', 'C' => 'C', 'D' => 'D', 'E' => 'E', 'F' => 'F', 'G' => 'G',
+            'H' => 'H', 'I' => 'I', 'J' => 'J', 'K' => 'K', 'L' => 'L', 'M' => 'M', 'N' => 'N', 'O' => 'O',
+            'P' => 'P', 'R' => 'R', 'S' => 'S', 'T' => 'T');
         $form->add(new DropDownChoice("colname", $cols));
         $form->add(new DropDownChoice("colcode", $cols));
         $form->add(new DropDownChoice("colbarcode", $cols));
@@ -84,6 +87,8 @@ class Import extends \App\Pages\Base
         $form->add(new DropDownChoice("ncolqty", $cols));
         $form->add(new DropDownChoice("ncolprice", $cols));
         $form->add(new DropDownChoice("ncolmsr", $cols));
+        $form->add(new DropDownChoice("nsdate", $cols));
+        $form->add(new DropDownChoice("nsnumber", $cols));
         $form->add(new CheckBox("npassfirst"));
         $form->add(new CheckBox("npreview"));
         $form->add(new CheckBox("ncheckname"));
@@ -111,11 +116,13 @@ class Import extends \App\Pages\Base
         $this->_tvars['preview3'] = false;
     }
 
-    public function OnAutoCustomer($sender) {
+    public function OnAutoCustomer($sender)
+    {
         return Customer::getList($sender->getText());
     }
 
-    public function onType($sender) {
+    public function onType($sender)
+    {
         $t = $sender->getValue();
 
         $this->iform->colqty->setVisible($t == 1);
@@ -131,7 +138,7 @@ class Import extends \App\Pages\Base
         $this->iform->colmsr->setVisible(true);
         $this->iform->coldesc->setVisible(true);
         $this->iform->colqty->setVisible(true);
-        $this->iform->colinprice->setVisible(true);
+
 
         if ($t == 2) {
             $this->iform->item_type->setVisible(false);
@@ -148,7 +155,8 @@ class Import extends \App\Pages\Base
         }
     }
 
-    public function onImport($sender) {
+    public function onImport($sender)
+    {
         $t = $this->iform->itype->getValue();
         $store = $this->iform->store->getValue();
         $item_type = $this->iform->item_type->getValue();
@@ -215,20 +223,20 @@ class Import extends \App\Pages\Base
             foreach ($data as $row) {
 
                 $this->_tvars['list'][] = array(
-                    'colname'    => $row[$colname],
-                    'colcode'    => $row[$colcode],
+                    'colname' => $row[$colname],
+                    'colcode' => $row[$colcode],
                     'colbarcode' => $row[$colbarcode],
-                    'colgr'      => $row[$colgr],
-                    'colqty'     => $row[$colqty],
-                    'colmsr'     => $row[$colmsr],
+                    'colgr' => $row[$colgr],
+                    'colqty' => $row[$colqty],
+                    'colmsr' => $row[$colmsr],
                     'colinprice' => $row[$colinprice],
-                    'colprice1'  => $row[$colprice1],
-                    'colprice2'  => $row[$colprice2],
-                    'colprice3'  => $row[$colprice3],
-                    'colprice4'  => $row[$colprice4],
-                    'colprice5'  => $row[$colprice5],
-                    'colbrand'   => $row[$colbrand],
-                    'coldesc'    => $row[$coldesc]
+                    'colprice1' => $row[$colprice1],
+                    'colprice2' => $row[$colprice2],
+                    'colprice3' => $row[$colprice3],
+                    'colprice4' => $row[$colprice4],
+                    'colprice5' => $row[$colprice5],
+                    'colbrand' => $row[$colbrand],
+                    'coldesc' => $row[$coldesc]
                 );
             }
             return;
@@ -411,7 +419,8 @@ class Import extends \App\Pages\Base
         $this->setSuccess("imported_items", $cnt);
     }
 
-    public function onCImport($sender) {
+    public function onCImport($sender)
+    {
         $t = $this->cform->ctype->getValue();
 
         $preview = $this->cform->cpreview->isChecked();
@@ -464,10 +473,10 @@ class Import extends \App\Pages\Base
             foreach ($data as $row) {
 
                 $this->_tvars['list2'][] = array(
-                    'colname'    => $row[$colcname],
-                    'colphone'   => $row[$colphone],
-                    'colemail'   => $row[$colemail],
-                    'colcity'    => $row[$colcity],
+                    'colname' => $row[$colcname],
+                    'colphone' => $row[$colphone],
+                    'colemail' => $row[$colemail],
+                    'colcity' => $row[$colcity],
                     'coladdress' => $row[$coladdress]
                 );
             }
@@ -518,7 +527,8 @@ class Import extends \App\Pages\Base
         $this->setSuccess("imported_customers ", $cnt);
     }
 
-    public function onNImport($sender) {
+    public function onNImport($sender)
+    {
         $store = $this->nform->nstore->getValue();
         $c = $this->nform->ncust->getKey();
         $checkname = $this->nform->ncheckname->isChecked();
@@ -533,6 +543,8 @@ class Import extends \App\Pages\Base
         $colqty = $this->nform->ncolqty->getValue();
         $colprice = $this->nform->ncolprice->getValue();
         $colmsr = $this->nform->ncolmsr->getValue();
+        $snumber = $this->nform->nsnumber->getValue();
+        $sdate = $this->nform->nsdate->getValue();
 
         if ($colname === '0') {
             $this->setError('noselcolname');
@@ -582,12 +594,12 @@ class Import extends \App\Pages\Base
             foreach ($data as $row) {
 
                 $this->_tvars['list'][] = array(
-                    'colname'    => $row[$colname],
-                    'colcode'    => $row[$colcode],
+                    'colname' => $row[$colname],
+                    'colcode' => $row[$colcode],
                     'colbarcode' => $row[$colbarcode],
-                    'colqty'     => $row[$colqty],
-                    'colmsr'     => $row[$colmsr],
-                    'colprice'   => $row[$colprice]
+                    'colqty' => $row[$colqty],
+                    'colmsr' => $row[$colmsr],
+                    'colprice' => $row[$colprice]
                 );
             }
             return;
@@ -626,6 +638,11 @@ class Import extends \App\Pages\Base
 
                     $item->save();
                 }
+
+                if ($row[$snumber]) $item->snumber = trim($row[$snumber]);
+                if ($row[$sdate]) $item->sdate = strtotime(date("d-m-Y", ($row[$sdate] - 25569) * 86400));
+
+
                 if ($qty > 0) {
                     $item->price = $price;
                     $item->quantity = $qty;
@@ -645,7 +662,7 @@ class Import extends \App\Pages\Base
             $amount = 0;
             $itlist = array();
             foreach ($items as $item) {
-                $itlist[$item->item_id] = $item;
+                $itlist[] = $item;
                 $amount = $amount + ($item->quantity * $item->price);
             }
             $doc->packDetails('detaildata', $itlist);
