@@ -221,7 +221,8 @@ class ItemList extends \App\Pages\Base
         $header['D1'] = "Ед.";
         $header['E1'] = "Категория";
         $header['F1'] = "Кол.";
-        $header['G1'] = "Цена";
+        $header['G1'] = "Сума";
+        $header['H1'] = "Цена";
 
         $i = 1;
         foreach ($list as $item) {
