@@ -3,6 +3,7 @@
 namespace App\API;
 
 use \App\Entity\Item;
+use App\Entity\Stock;
 use \App\Helper as H;
 
 class items extends \App\API\Base\JsonRPC
@@ -83,7 +84,9 @@ class items extends \App\API\Base\JsonRPC
                 'item_type'    => $item->item_type,
                 'manufacturer' => $item->manufacturer,
                 'cat_name'     => $item->cat_name,
-                'cat_id'       => $item->cat_id
+                'cat_id'       => $item->cat_id,
+                'snumber'       => $item->snumber,
+                'sdate'       => $item->sdate,
             );
 
             $it = array_merge($it, $item->getData());
@@ -113,6 +116,43 @@ class items extends \App\API\Base\JsonRPC
 
 
         return $list;
+    }
+
+    public function storestock($args){
+
+        $list = array();
+        $w = '';
+
+        if ($args['cat'] > 0) {
+            $w .= " and cat_id=" . $args['cat'];
+        }
+        if ($args['item_type'] > 0) {
+            $w .= " and item_type=" . $args['item_type'];
+        }
+
+        foreach (Stock::find($w, 'itemname') as $item) {
+            $plist = array();
+
+            $it = array(
+                'item_code'    => $item->item_code,
+                'bar_code'     => $item->bar_code,
+                'itemname'     => $item->itemname,
+                'description'  => base64_encode($item->description),
+                'measure'      => $item->msr,
+                'item_type'    => $item->item_type,
+                'manufacturer' => $item->manufacturer,
+                'cat_name'     => $item->cat_name,
+                'cat_id'       => $item->cat_id,
+                'snumber'       => $item->snumber,
+                'sdate'       => $item->sdate,
+            );
+
+            $it = array_merge($it, $item->getData());
+
+            $list[] = $it;
+        }
+        return $list;
+
     }
 
     //  количества на  складе
