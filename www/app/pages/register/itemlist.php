@@ -234,6 +234,9 @@ class ItemList extends \App\Pages\Base
             $qty = $item->getQuantity($store);
             $data['F' . $i] = H::fqty($qty);
 
+            $am = $item->getAmount($store);
+            $data['G' . $i] = H::fa(abs($am));
+
             $plist = array();
             if ($item->price1 > 0) {
                 $plist[] = $item->getPrice('price1', $store);
@@ -250,7 +253,7 @@ class ItemList extends \App\Pages\Base
             if ($item->price5 > 0) {
                 $plist[] = $item->getPrice('price5', $store);
             }
-            $data['G' . $i] = implode(' ', $plist);
+            $data['H' . $i] = implode(' ', $plist);
         }
 
         H::exportExcel($data, $header, 'itemlist.xlsx');
